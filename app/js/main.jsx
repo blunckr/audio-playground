@@ -1,7 +1,7 @@
 var React = require("react");
-var Test = require("./components/test.jsx");
+var TodoApp = require("./components/TodoApp.jsx");
 
-React.render(<Test name="Ryker" />, document.getElementById("app"));
+React.render(<TodoApp />, document.getElementById("app"));
 
 // var audio = new (AudioContext || webkitGetAudioContext)();
 //
