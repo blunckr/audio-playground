@@ -1,17 +1,17 @@
 var Dispatcher = require('../Dispatcher');
-var TodoConstants = require('../constants/TodoConstants');
+var SampleConstants = require('../constants/SampleConstants');
 
 module.exports = {
   create: function(text) {
     Dispatcher.dispatch({
-      actionType: TodoConstants.TODO_CREATE,
+      actionType: SampleConstants.SAMPLE_CREATE,
       text: text
     });
   },
 
   destroy: function(id) {
-    Dispatcher.handleViewAction({
-      actionType: TodoConstants.TODO_DESTROY,
+    Dispatcher.dispatch({
+      actionType: SampleConstants.SAMPLE_DESTROY,
       id: id
     });
   }

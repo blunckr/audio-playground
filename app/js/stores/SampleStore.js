@@ -1,13 +1,13 @@
 var {EventEmitter} = require('events');
 
 var Dispatcher = require('../Dispatcher');
-var TodoConstants = require('../constants/TodoConstants');
+var SampleConstants = require('../constants/SampleConstants');
 
 var assign = require('lodash/object/assign');
 
 var CHANGE_EVENT = 'change';
 
-var _todos = {}; // collection of todo items
+var _samples = {}; // collection of sample items
 
 /**
  * Create a TODO item.
@@ -16,7 +16,7 @@ var _todos = {}; // collection of todo items
 function create(text) {
   // Using the current timestamp in place of a real id.
   var id = Date.now();
-  _todos[id] = {
+  _samples[id] = {
     id: id,
     complete: false,
     text: text
@@ -28,17 +28,17 @@ function create(text) {
  * @param {string} id
  */
 function destroy(id) {
-  delete _todos[id];
+  delete _samples[id];
 }
 
-var TodoStore = assign({}, EventEmitter.prototype, {
+var SampleStore = assign({}, EventEmitter.prototype, {
 
   /**
    * Get the entire collection of TODOs.
    * @return {object}
    */
   getAll: function() {
-    return _todos;
+    return _samples;
   },
 
   emitChange: function() {
@@ -63,23 +63,23 @@ var TodoStore = assign({}, EventEmitter.prototype, {
     var text;
 
     switch(action.actionType) {
-      case TodoConstants.TODO_CREATE:
+      case SampleConstants.SAMPLE_CREATE:
         text = action.text.trim();
         if (text !== '') {
           create(text);
-          TodoStore.emitChange();
+          SampleStore.emitChange();
         }
         break;
 
-      case TodoConstants.TODO_DESTROY:
+      case SampleConstants.SAMPLE_DESTROY:
         destroy(action.id);
-        TodoStore.emitChange();
+        SampleStore.emitChange();
         break;
 
-      // add more cases for other actionTypes, like TODO_UPDATE, etc.
+      // add more cases for other actionTypes, like SAMPLE_UPDATE, etc.
       return true; // No errors. Needed by promise in Dispatcher.
     }
   })
 });
 
-export default TodoStore;
+export default SampleStore;

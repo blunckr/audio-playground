@@ -1,5 +1,6 @@
 var React = require('react');
-var TodoActions = require('../actions/TodoActions.js');
+var BaseComponent = require('./BaseComponent.jsx');
+var SampleActions = require('../actions/SampleActions.js');
 
 function cleanState(){
   return {
@@ -7,12 +8,11 @@ function cleanState(){
   };
 }
 
-export default class AddTodo extends React.Component {
+export default class SampleNew extends BaseComponent {
   constructor() {
     super();
     this.state = cleanState();
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.bindFunctions(['handleSubmit', 'handleChange']);
   }
 
   handleChange(event) {
@@ -21,7 +21,7 @@ export default class AddTodo extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    TodoActions.create(this.state.value);
+    SampleActions.create(this.state.value);
     this.setState(cleanState());
   }
 

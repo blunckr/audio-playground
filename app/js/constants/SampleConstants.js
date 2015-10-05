@@ -1,0 +1,4 @@
+module.exports = {
+  SAMPLE_CREATE: 'SAMPLE_CREATE',
+  SAMPLE_DESTROY: 'SAMPLE_DESTROY'
+};
