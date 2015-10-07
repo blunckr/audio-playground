@@ -1,8 +1,10 @@
 var React = require('react');
+
 var BaseComponent = require('./BaseComponent.jsx');
 
 var SampleNew = require('./SampleNew.jsx');
-var SampleIndex = require('./SampleIndex.jsx');
+var Sample = require('./Sample.jsx');
+
 var SampleStore = require('../stores/SampleStore');
 
 function getSampleState() {
@@ -31,13 +33,16 @@ export default class SampleApp extends BaseComponent {
    * @return {object}
    */
   render() {
+    var allSamples = this.state.allSamples;
+    var samples = []
+    for (var key in allSamples) {
+      samples.push(<Sample key={key} sample={allSamples[key]} />);
+    }
+
     return (
       <div>
+        <ul id="sample-list">{samples}</ul>
         <SampleNew />
-        <SampleIndex
-          allSamples={this.state.allSamples}
-          areAllComplete={this.state.areAllComplete}
-        />
       </div>
     );
   }
