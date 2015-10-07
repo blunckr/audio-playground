@@ -5,11 +5,15 @@ var SampleActions = require('../actions/SampleActions');
 export default class SampleItem extends BaseComponent {
   constructor() {
     super();
-    this.bindFunctions(['handleDelete']);
+    this.bindFunctions(['handlePlay', 'handleDelete']);
   }
 
-  handleDelete(event) {
-    SampleActions.destroy(this.props.sample.id)
+  handlePlay(e) {
+    SampleActions.play(this.props.sample.id);
+  }
+
+  handleDelete(e) {
+    SampleActions.destroy(this.props.sample.id);
   }
 
   render() {
@@ -17,7 +21,7 @@ export default class SampleItem extends BaseComponent {
 
     return (
       <li>
-        <span>{sample.text}</span>
+        <button onClick={this.handlePlay}>Play</button>
         <button onClick={this.handleDelete}>Delete</button>
       </li>
     );

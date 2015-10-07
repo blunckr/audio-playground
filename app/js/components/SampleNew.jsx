@@ -2,34 +2,29 @@ var React = require('react');
 var BaseComponent = require('./BaseComponent.jsx');
 var SampleActions = require('../actions/SampleActions.js');
 
-function cleanState(){
-  return {
-    value: ''
-  };
-}
-
 export default class SampleNew extends BaseComponent {
   constructor() {
     super();
-    this.state = cleanState();
-    this.bindFunctions(['handleSubmit', 'handleChange']);
+    this.bindFunctions(['handleRecord', 'handleStop']);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleRecord(e) {
+    e.preventDefault();
+    SampleActions.create();
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    SampleActions.create(this.state.value);
-    this.setState(cleanState());
+  handleStop(e) {
+    e.preventDefault();
+    SampleActions.stopRecording();
   }
 
   render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input type="text" value={this.state.value} onChange={this.handleChange} />
-      </form>
-    );
+    if (!this.props.isRecording) {
+      return <button onClick={this.handleRecord}>Record New Sample</button>
+    } else if (this.props.isRecording && this.props.newSample == null) {
+      return <p>Awaiting permission to record...</p>
+    } else {
+      return <button onClick={this.handleStop}>Stop Recording</button>
+    }
   }
 }

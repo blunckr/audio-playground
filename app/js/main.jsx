@@ -22,3 +22,6 @@ React.render(<Layout />, document.getElementById("app"));
 // );
 //
 // React.render(<Index name="Ryker" />, document.getElementById("app"));
+
+
+// audio.createScriptProcessor to create your own thing

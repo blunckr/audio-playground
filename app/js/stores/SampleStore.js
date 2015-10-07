@@ -2,59 +2,86 @@ var {EventEmitter} = require('events');
 
 var Dispatcher = require('../Dispatcher');
 var SampleConstants = require('../constants/SampleConstants');
+var SampleActions = require('../actions/SampleActions');
 
 var assign = require('lodash/object/assign');
 
 var CHANGE_EVENT = 'change';
 
 var _samples = {}; // collection of sample items
+var _newSample = null;
+var _isRecording = false;
+var audio = new (AudioContext || webkitGetAudioContext)();
 
-/**
- * Create a TODO item.
- * @param {string} text The content of the TODO
- */
-function create(text) {
-  // Using the current timestamp in place of a real id.
-  var id = Date.now();
-  _samples[id] = {
-    id: id,
-    complete: false,
-    text: text
-  };
+function create() {
+
+  function getUserMedia(options, success, error){
+    if(navigator.mediaDevices != undefined) {
+      navigator.mediaDevices.getUserMedia(options).then(success).catch(error);
+    } else {
+      navigator.webkitGetUserMedia(options, success, error);
+    }
+  }
+
+  getUserMedia({audio: true}, (stream) => {
+      var source = audio.createMediaStreamSource(stream);
+      source.connect(audio.destination);
+      _newSample = {
+        stream: stream,
+        source: source,
+      }
+      // this could be done with the dispatcher and everything, not sure if that
+      // is necessary
+      SampleStore.emitChange()
+    }, (err) => {
+      alert("You need to give permission to use your microphone and refresh the page");
+    }
+  );
+  // that part is async, so we need to register some change
+  _isRecording = true;
 }
 
-/**
- * Delete a TODO item.
- * @param {string} id
- */
+function stopRecording() {
+  _newSample.stream.stop();
+  _isRecording = false;
+
+  var id = new Date()
+  _newSample.id = id;
+  _samples[new Date()] = _newSample;
+  _newSample = null;
+}
+
+function play(id) {
+  debugger;
+  _samples[id].source.connect(audio.destination);
+}
+
 function destroy(id) {
   delete _samples[id];
 }
 
 var SampleStore = assign({}, EventEmitter.prototype, {
 
-  /**
-   * Get the entire collection of TODOs.
-   * @return {object}
-   */
   getAll: function() {
     return _samples;
+  },
+
+  getNewSample: function() {
+    return _newSample;
+  },
+
+  getIsRecording: function() {
+    return _isRecording;
   },
 
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
@@ -64,11 +91,18 @@ var SampleStore = assign({}, EventEmitter.prototype, {
 
     switch(action.actionType) {
       case SampleConstants.SAMPLE_CREATE:
-        text = action.text.trim();
-        if (text !== '') {
-          create(text);
-          SampleStore.emitChange();
-        }
+        create();
+        SampleStore.emitChange();
+        break;
+
+      case SampleConstants.SAMPLE_STOP_RECORDING:
+        stopRecording();
+        SampleStore.emitChange();
+        break;
+
+      case SampleConstants.SAMPLE_PLAY:
+        play(action.id);
+        SampleStore.emitChange();
         break;
 
       case SampleConstants.SAMPLE_DESTROY:

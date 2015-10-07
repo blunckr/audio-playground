@@ -9,7 +9,9 @@ var SampleStore = require('../stores/SampleStore');
 
 function getSampleState() {
   return {
-    allSamples: SampleStore.getAll()
+    allSamples: SampleStore.getAll(),
+    isRecording: SampleStore.getIsRecording(),
+    newSample: SampleStore.getNewSample()
   };
 }
 
@@ -42,7 +44,7 @@ export default class SampleApp extends BaseComponent {
     return (
       <div>
         <ul id="sample-list">{samples}</ul>
-        <SampleNew />
+        <SampleNew isRecording={this.state.isRecording} newSample={this.state.newSample}/>
       </div>
     );
   }

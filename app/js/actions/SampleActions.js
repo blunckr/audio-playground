@@ -2,10 +2,22 @@ var Dispatcher = require('../Dispatcher');
 var SampleConstants = require('../constants/SampleConstants');
 
 module.exports = {
-  create: function(text) {
+  create: function() {
     Dispatcher.dispatch({
       actionType: SampleConstants.SAMPLE_CREATE,
-      text: text
+    });
+  },
+
+  stopRecording: function () {
+    Dispatcher.dispatch({
+      actionType: SampleConstants.SAMPLE_STOP_RECORDING
+    });
+  },
+
+  play: function (id) {
+    Dispatcher.dispatch({
+      actionType: SampleConstants.SAMPLE_PLAY,
+      id: id
     });
   },
 
