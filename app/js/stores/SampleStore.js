@@ -11,7 +11,6 @@ var CHANGE_EVENT = 'change';
 var _samples = {}; // collection of sample items
 var _newSample = null;
 var _isRecording = false;
-var audio = new (AudioContext || webkitGetAudioContext)();
 
 function create() {
 
@@ -24,19 +23,23 @@ function create() {
   }
 
   getUserMedia({audio: true}, (stream) => {
-      var source = audio.createMediaStreamSource(stream);
-      source.connect(audio.destination);
-      _newSample = {
-        stream: stream,
-        source: source,
-      }
-      // this could be done with the dispatcher and everything, not sure if that
-      // is necessary
-      SampleStore.emitChange()
-    }, (err) => {
-      alert("You need to give permission to use your microphone and refresh the page");
+    var audio = new (AudioContext || webkitGetAudioContext)();
+    var source = audio.createMediaStreamSource(stream);
+    var processor = audio.createScriptProcessor(4096, 1, 1);
+    processor.onaudioprocess = function(audioProcessingEvent) {
+      console.log('HERE');
     }
-  );
+    source.connect(processor);
+    processor.connect(audio.destination); // this is for a bug in chrome. it won't play anything since the processor doesn't return anything
+    _newSample = {
+      stream: stream
+    }
+    // this could be done with the dispatcher and everything, not sure if that
+    // is necessary
+    SampleStore.emitChange()
+  }, (err) => {
+      alert("You need to give permission to use your microphone and refresh the page");
+  });
   // that part is async, so we need to register some change
   _isRecording = true;
 }
