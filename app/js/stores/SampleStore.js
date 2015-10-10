@@ -5,6 +5,8 @@ var SampleConstants = require('../constants/SampleConstants');
 var SampleActions = require('../actions/SampleActions');
 
 var assign = require('lodash/object/assign');
+var each = require('lodash/collection/each');
+var times = require('lodash/utility/times');
 
 var CHANGE_EVENT = 'change';
 
@@ -12,27 +14,37 @@ var _samples = {}; // collection of sample items
 var _newSample = null;
 var _isRecording = false;
 
-function create() {
+var channelCount = 2;
 
-  function getUserMedia(options, success, error){
-    if(navigator.mediaDevices != undefined) {
-      navigator.mediaDevices.getUserMedia(options).then(success).catch(error);
-    } else {
-      navigator.webkitGetUserMedia(options, success, error);
-    }
+function getUserMedia(options, success, error){
+  if(navigator.mediaDevices != undefined) {
+    navigator.mediaDevices.getUserMedia(options).then(success).catch(error);
+  } else {
+    navigator.webkitGetUserMedia(options, success, error);
   }
+}
+
+function create() {
 
   getUserMedia({audio: true}, (stream) => {
     var audio = new (AudioContext || webkitGetAudioContext)();
     var source = audio.createMediaStreamSource(stream);
-    var processor = audio.createScriptProcessor(4096, 1, 1);
-    processor.onaudioprocess = function(audioProcessingEvent) {
-      console.log('HERE');
+    var processor = audio.createScriptProcessor(4096, channelCount, channelCount);
+    var buffer = [];
+    times(channelCount, (i) => {
+      buffer[i] = [];
+    });
+
+    processor.onaudioprocess = (e) => {
+      times(channelCount, (i) => {
+        buffer[i].push(e.inputBuffer.getChannelData(i));
+      });
     }
     source.connect(processor);
     processor.connect(audio.destination); // this is for a bug in chrome. it won't play anything since the processor doesn't return anything
     _newSample = {
-      stream: stream
+      stream: stream,
+      buffer: buffer
     }
     // this could be done with the dispatcher and everything, not sure if that
     // is necessary
@@ -50,13 +62,29 @@ function stopRecording() {
 
   var id = new Date()
   _newSample.id = id;
+  delete _newSample.stream;
   _samples[new Date()] = _newSample;
   _newSample = null;
 }
 
 function play(id) {
-  debugger;
-  _samples[id].source.connect(audio.destination);
+  var audio = new (AudioContext || webkitGetAudioContext)();
+  var frameCount = audio.sampleRate * 2.0;
+  var buffer = audio.createBuffer(channelCount, frameCount, audio.sampleRate);
+
+  var sample = _samples[id];
+
+  each(sample.buffer, (inChannel, i) => {
+    var outChannel = buffer.getChannelData(i);
+    times(frameCount, (frame) => {
+      outChannel[frame] = inChannel[0][frame];
+    });
+  });
+
+  var source = audio.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audio.destination);
+  source.start();
 }
 
 function destroy(id) {
