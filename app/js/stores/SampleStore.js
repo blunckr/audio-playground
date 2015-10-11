@@ -1,4 +1,4 @@
-require("../../../vendor/recorderjs/recorder.js"); // not a module, puts Recorder on the window
+require("../../recorderjs/recorder.js"); // not a module, puts Recorder on the window
 
 var {EventEmitter} = require('events');
 
@@ -30,7 +30,7 @@ function getUserMedia(options, success, error){
 getUserMedia({audio: true},
   (stream) => {
     var source = audio.createMediaStreamSource(stream);
-    recorder = new Recorder(source);
+    recorder = new Recorder(source, {workerPath: '/recorderjs/recorderWorker.js'});
   }, (err) => {
     alert("You need to give permission to use your microphone and refresh the page");
     location.reload();
