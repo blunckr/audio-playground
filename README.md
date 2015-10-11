@@ -4,8 +4,9 @@ Ideally, it will be a page where you can record clips, apply filters to them, an
 We will see.
 
 If you're interested in running it:
-  1. Use node v4.1.1. `nvm use` if you're using nvm
-  2. `npm install`
-  3. `npm run server` for dev server.
+  1. `git submodule init && git submodule update`
+  2. Use node v4.1.1. `nvm use` if you're using nvm
+  3. `npm install`
+  4. `npm run server` for dev server.
 
 MDN has about the only guides available.

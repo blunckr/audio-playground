@@ -1,6 +1,9 @@
 var React = require('react');
 var BaseComponent = require('./BaseComponent.jsx');
-var SampleActions = require('../actions/SampleActions.js');
+var SampleActions = require('../actions/SampleActions');
+var SampleConstants = require('../constants/SampleConstants');
+
+var includes = require('lodash/collection/includes');
 
 export default class SampleNew extends BaseComponent {
   constructor() {
@@ -19,12 +22,13 @@ export default class SampleNew extends BaseComponent {
   }
 
   render() {
-    if (!this.props.isRecording) {
+    switch (this.props.newSampleState) {
+    case null:
       return <button onClick={this.handleRecord}>Record New Sample</button>
-    } else if (this.props.isRecording && this.props.newSample == null) {
-      return <p>Awaiting permission to record...</p>
-    } else {
+    case SampleConstants.IS_RECORDING:
       return <button onClick={this.handleStop}>Stop Recording</button>
+    case SampleConstants.IS_SAVING:
+      return <p>Saving...</p>
     }
   }
 }
