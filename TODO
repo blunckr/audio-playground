@@ -1,2 +1,6 @@
-Fork recorderjs to be friendly with webpack
-see if workers can be loaded with webpack as well
+optimizations:
+  Fork recorderjs to be friendly with webpack
+  also allow exporting buffer and WAV at the same time. it can't handle two callbacks right now
+  use worker loader
+  linter
+  upgrade to latest react

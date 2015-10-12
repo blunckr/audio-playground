@@ -13,17 +13,19 @@ var times = require('lodash/utility/times');
 var CHANGE_EVENT = 'change';
 
 var _samples = {}; // collection of sample items
+
+var _newSample = null;
 var _newSampleState = null;
 
 var recorder = null;
 var audio = new (AudioContext || webkitGetAudioContext)();
-var channelCount = 2;
+var sampleID = 0;
 
-function newSampleTemplate(id, buffer) {
-  _samples[id] = {
-    id: id,
-    name: '',
-    buffer: buffer // you need to provider a buffer
+function newSampleTemplate() {
+  sampleID++;
+  return {
+    id: sampleID,
+    name: "Sample " + sampleID
   }
 }
 
@@ -45,17 +47,26 @@ getUserMedia({audio: true},
   }
 );
 
-function saveNewSample(buffers) {
-  recorder.clear();
+function saveNewSampleBuffer(buffers) {
   var newBuffer = audio.createBuffer(2, buffers[0].length, audio.sampleRate);
   newBuffer.getChannelData(0).set(buffers[0]);
   newBuffer.getChannelData(1).set(buffers[1]);
 
+  _newSample.buffer = newBuffer;
+  recorder.exportWAV(saveNewSampleBlob);
+}
+
+function saveNewSampleBlob(blob) {
+  _newSample.blobURL = URL.createObjectURL(blob);
+  saveFinished();
+}
+
+function saveFinished() {
+  recorder.clear();
   _newSampleState = null;
-
-  newSampleTemplate(new Date(), newBuffer);
-
-  SampleStore.emitChange();
+  _samples[_newSample.id] = _newSample;
+  _newSample = null;
+  SampleStore.emitChange()
 }
 
 function create() {
@@ -65,13 +76,14 @@ function create() {
 
 function stopRecording() {
   recorder.stop();
-  recorder.getBuffer(saveNewSample);
+  recorder.getBuffer(saveNewSampleBuffer);
+
+  _newSample = newSampleTemplate();
   _newSampleState = SampleConstants.IS_SAVING;
 }
 
 function play(id) {
   var sample = _samples[id];
-
   var source = audio.createBufferSource();
   source.buffer = sample.buffer;
   source.connect(audio.destination);

@@ -18,10 +18,9 @@ export default class SampleItem extends BaseComponent {
 
   render() {
     var sample = this.props.sample;
-
     return (
       <li>
-        <button onClick={this.handlePlay}>Play</button>
+        <audio src={sample.blobURL} controls='true'/>
         <button onClick={this.handleDelete}>Delete</button>
       </li>
     );
