@@ -19,6 +19,14 @@ var recorder = null;
 var audio = new (AudioContext || webkitGetAudioContext)();
 var channelCount = 2;
 
+function newSampleTemplate(id, buffer) {
+  _samples[id] = {
+    id: id,
+    name: '',
+    buffer: buffer // you need to provider a buffer
+  }
+}
+
 function getUserMedia(options, success, error){
   if(navigator.mediaDevices != undefined) {
     navigator.mediaDevices.getUserMedia(options).then(success).catch(error);
@@ -38,15 +46,14 @@ getUserMedia({audio: true},
 );
 
 function saveNewSample(buffers) {
-  var newSource = audio.createBufferSource();
+  recorder.clear();
   var newBuffer = audio.createBuffer(2, buffers[0].length, audio.sampleRate);
   newBuffer.getChannelData(0).set(buffers[0]);
   newBuffer.getChannelData(1).set(buffers[1]);
-  newSource.buffer = newBuffer;
 
-  newSource.connect(audio.destination);
-  newSource.start(0);
   _newSampleState = null;
+
+  newSampleTemplate(new Date(), newBuffer);
 
   SampleStore.emitChange();
 }
@@ -63,23 +70,12 @@ function stopRecording() {
 }
 
 function play(id) {
-  var audio = new (AudioContext || webkitGetAudioContext)();
-  var frameCount = audio.sampleRate * 2.0;
-  var buffer = audio.createBuffer(channelCount, frameCount, audio.sampleRate);
-
   var sample = _samples[id];
 
-  each(sample.buffer, (inChannel, i) => {
-    var outChannel = buffer.getChannelData(i);
-    times(frameCount, (frame) => {
-      outChannel[frame] = inChannel[0][frame];
-    });
-  });
-
   var source = audio.createBufferSource();
-  source.buffer = buffer;
+  source.buffer = sample.buffer;
   source.connect(audio.destination);
-  source.start();
+  source.start(0);
 }
 
 function destroy(id) {

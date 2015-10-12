@@ -1,0 +1,2 @@
+Fork recorderjs to be friendly with webpack
+see if workers can be loaded with webpack as well
