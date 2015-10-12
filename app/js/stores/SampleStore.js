@@ -25,7 +25,8 @@ function newSampleTemplate() {
   sampleID++;
   return {
     id: sampleID,
-    name: "Sample " + sampleID
+    name: "Sample " + sampleID,
+    loop: false
   }
 }
 
@@ -82,13 +83,18 @@ function stopRecording() {
   _newSampleState = SampleConstants.IS_SAVING;
 }
 
-function play(id) {
-  var sample = _samples[id];
-  var source = audio.createBufferSource();
-  source.buffer = sample.buffer;
-  source.connect(audio.destination);
-  source.start(0);
+function toggleLooping(id) {
+  _samples[id].loop = !_samples[id].loop;
 }
+
+// I feel like I will want this later
+// function play(id) {
+//   var sample = _samples[id];
+//   var source = audio.createBufferSource();
+//   source.buffer = sample.buffer;
+//   source.connect(audio.destination);
+//   source.start(0);
+// }
 
 function destroy(id) {
   delete _samples[id];
@@ -130,8 +136,8 @@ var SampleStore = assign({}, EventEmitter.prototype, {
         SampleStore.emitChange();
         break;
 
-      case SampleConstants.PLAY:
-        play(action.id);
+      case SampleConstants.TOGGLE_LOOPING:
+        toggleLooping(action.id);
         SampleStore.emitChange();
         break;
 

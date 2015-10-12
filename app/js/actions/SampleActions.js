@@ -14,9 +14,9 @@ module.exports = {
     });
   },
 
-  play: function (id) {
+  toggleLooping: function (id) {
     Dispatcher.dispatch({
-      actionType: SampleConstants.PLAY,
+      actionType: SampleConstants.TOGGLE_LOOPING,
       id: id
     });
   },
@@ -27,4 +27,6 @@ module.exports = {
       id: id
     });
   }
+
+
 };
