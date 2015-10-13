@@ -3,8 +3,6 @@ var BaseComponent = require('./BaseComponent.jsx');
 var SampleActions = require('../actions/SampleActions');
 var SampleConstants = require('../constants/SampleConstants');
 
-var includes = require('lodash/collection/includes');
-
 export default class SampleNew extends BaseComponent {
   constructor() {
     super();

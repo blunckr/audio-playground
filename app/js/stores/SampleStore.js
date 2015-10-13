@@ -4,6 +4,7 @@ var BaseStore = require('./BaseStore');
 var Dispatcher = require('../Dispatcher');
 var SampleConstants = require('../constants/SampleConstants');
 var SampleActions = require('../actions/SampleActions');
+var audio = require('../lib/AudioContext');
 
 var assign = require('lodash/object/assign');
 
@@ -13,7 +14,6 @@ var _newSample = null;
 var _newSampleState = null;
 
 var recorder = null;
-var audio = new (AudioContext || webkitGetAudioContext)();
 var sampleID = 0;
 
 function newSampleTemplate() {

@@ -1,11 +1,11 @@
 var React = require('react');
 
 var BaseComponent = require('./BaseComponent.jsx');
-
 var SampleNew = require('./SampleNew.jsx');
 var Sample = require('./Sample.jsx');
-
 var SampleStore = require('../stores/SampleStore');
+
+var forOwn = require('lodash/object/forOwn');
 
 function getSampleState() {
   return {
@@ -14,7 +14,7 @@ function getSampleState() {
   };
 }
 
-export default class SampleApp extends BaseComponent {
+export default class Layout extends BaseComponent {
 
   constructor(){
     super();
@@ -34,15 +34,14 @@ export default class SampleApp extends BaseComponent {
    * @return {object}
    */
   render() {
-    var allSamples = this.state.allSamples;
     var samples = []
-    for (var key in allSamples) {
-      samples.push(<Sample key={key} sample={allSamples[key]} />);
-    }
+    forOwn(this.state.allSamples, (v, k) =>{
+      samples.push(<Sample key={k} sample={v} />);
+    });
 
     return (
       <div>
-        <ul id="sample-list">{samples}</ul>
+        <div id="samples">{samples}</div>
         <SampleNew newSampleState={this.state.newSampleState}/>
       </div>
     );

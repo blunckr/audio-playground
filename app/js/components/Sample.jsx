@@ -1,8 +1,9 @@
 var React = require('react');
 var BaseComponent = require('./BaseComponent.jsx');
 var SampleActions = require('../actions/SampleActions');
+var EffectNew = require('./EffectNew.jsx')
 
-export default class SampleItem extends BaseComponent {
+export default class Sample extends BaseComponent {
   constructor() {
     super();
     this.bindFunctions(['handlePlay', 'handleDelete', 'handleLoopingChange']);
@@ -23,12 +24,16 @@ export default class SampleItem extends BaseComponent {
 
   render() {
     var sample = this.props.sample;
+
     return (
-      <li>
+      <div>
         <audio src={sample.blobURL} controls='true' loop={sample.loop}/>
         <label><input type="checkbox" name="looping" value={sample.loop} onChange={this.handleLoopingChange}/>Looping?</label>
         <button onClick={this.handleDelete}>Delete</button>
-      </li>
+
+        <EffectNew sample={sample}/>
+        <hr />
+      </div>
     );
   }
 }

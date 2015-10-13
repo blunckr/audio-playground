@@ -17,14 +17,14 @@ module.exports = {
   toggleLooping: function (id) {
     Dispatcher.dispatch({
       actionType: SampleConstants.TOGGLE_LOOPING,
-      id: id
+      id
     });
   },
 
   destroy: function(id) {
     Dispatcher.dispatch({
       actionType: SampleConstants.DESTROY,
-      id: id
+      id
     });
   }
 
