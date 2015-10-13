@@ -21,4 +21,7 @@ export default class BaseComponent extends React.Component {
     });
   }
 
+  handleStoreChange() {
+    this.setState(this.getStoreState());
+  }
 }

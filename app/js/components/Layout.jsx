@@ -7,17 +7,10 @@ var SampleStore = require('../stores/SampleStore');
 
 var forOwn = require('lodash/object/forOwn');
 
-function getStoreState() {
-  return {
-    allSamples: SampleStore.getAll()
-  };
-}
-
 export default class Layout extends BaseComponent {
-
-  constructor(){
+  constructor() {
     super();
-    this.state = getStoreState();
+    this.state = this.getStoreState();
     this.bindFunctions(['handleStoreChange']);
     this.stores = [SampleStore];
   }
@@ -31,12 +24,15 @@ export default class Layout extends BaseComponent {
     return (
       <div>
         <div id="samples">{samples}</div>
-        <SampleNew/>
+        <SampleNew newSampleState={this.state.newSampleState}/>
       </div>
     );
   }
 
-  handleStoreChange() {
-    this.setState(getStoreState());
+  getStoreState() {
+    return {
+      allSamples: SampleStore.getAll(),
+      newSampleState: SampleStore.getNewSampleState()
+    };
   }
 }

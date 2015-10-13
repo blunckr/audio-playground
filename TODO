@@ -1,6 +1,6 @@
 optimizations:
   Fork recorderjs to be friendly with webpack
-  also allow exporting buffer and WAV at the same time. it can't handle two callbacks right now
+    also allow exporting buffer and WAV at the same time. it can't handle two callbacks right now
   use worker loader
   linter
   upgrade to latest react
