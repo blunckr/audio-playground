@@ -22,11 +22,11 @@ function newSampleTemplate() {
     id: sampleID,
     name: "Sample " + sampleID,
     loop: false
-  }
+  };
 }
 
 function getUserMedia(options, success, error){
-  if(navigator.mediaDevices != undefined) {
+  if(navigator.mediaDevices !== undefined) {
     navigator.mediaDevices.getUserMedia(options).then(success).catch(error);
   } else {
     navigator.webkitGetUserMedia(options, success, error);
@@ -62,7 +62,7 @@ function saveFinished() {
   _newSampleState = null;
   _samples[_newSample.id] = _newSample;
   _newSample = null;
-  SampleStore.emitChange()
+  SampleStore.emitChange();
 }
 
 function create() {
@@ -126,9 +126,8 @@ var SampleStore = assign({}, BaseStore, {
         destroy(action.id);
         SampleStore.emitChange();
         break;
-
-      return true; // No errors. Needed by promise in Dispatcher.
-    }
+      }
+    return true; // No errors. Needed by promise in Dispatcher.
   })
 });
 

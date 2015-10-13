@@ -1,7 +1,7 @@
 var React = require('react');
 var BaseComponent = require('./BaseComponent.jsx');
 var SampleActions = require('../actions/SampleActions');
-var EffectNew = require('./EffectNew.jsx')
+var EffectNew = require('./EffectNew.jsx');
 
 export default class Sample extends BaseComponent {
   constructor() {

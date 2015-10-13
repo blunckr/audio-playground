@@ -6,7 +6,7 @@ var EffectConstants = require('../constants/EffectConstants');
 var forOwn = require('lodash/object/forOwn');
 
 function defaultState(){
-  return {nodeType: EffectConstants.TYPES.CONVOVLER_NODE}
+  return {nodeType: EffectConstants.TYPES.CONVOVLER_NODE};
 }
 
 export default class EffectNew extends BaseComponent {

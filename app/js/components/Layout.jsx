@@ -7,10 +7,9 @@ var SampleStore = require('../stores/SampleStore');
 
 var forOwn = require('lodash/object/forOwn');
 
-function getSampleState() {
+function getStoreState() {
   return {
-    allSamples: SampleStore.getAll(),
-    newSampleState: SampleStore.getNewSampleState()
+    allSamples: SampleStore.getAll()
   };
 }
 
@@ -18,36 +17,26 @@ export default class Layout extends BaseComponent {
 
   constructor(){
     super();
-    this.state = getSampleState()
+    this.state = getStoreState();
     this.bindFunctions(['handleStoreChange']);
+    this.stores = [SampleStore];
   }
 
-  componentDidMount() {
-    SampleStore.addChangeListener(this.handleStoreChange);
-  }
-
-  componentWillUnmount() {
-    SampleStore.removeChangeListener(this.handleStoreChange);
-  }
-
-  /**
-   * @return {object}
-   */
   render() {
-    var samples = []
-    forOwn(this.state.allSamples, (v, k) =>{
+    var samples = [];
+    forOwn(this.state.allSamples, (v, k) => {
       samples.push(<Sample key={k} sample={v} />);
     });
 
     return (
       <div>
         <div id="samples">{samples}</div>
-        <SampleNew newSampleState={this.state.newSampleState}/>
+        <SampleNew/>
       </div>
     );
   }
 
   handleStoreChange() {
-    this.setState(getSampleState());
+    this.setState(getStoreState());
   }
 }
