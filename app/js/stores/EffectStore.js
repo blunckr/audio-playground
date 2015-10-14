@@ -5,7 +5,8 @@ var EffectActions = require('../actions/EffectActions');
 var audio = require('../lib/AudioContext');
 
 var assign = require('lodash/object/assign');
-var filter = require('lodash/collection/filter');
+var forOwn = require('lodash/object/forOwn');
+var sortBy = require('lodash/collection/sortBy');
 
 var _effects = {};
 var _effectID = 0;
@@ -19,18 +20,22 @@ function create(sampleID, effectType) {
     case EffectConstants.TYPES.GAIN_NODE:
       node = audio.createGain();
       break;
-
   }
+  debugger
   var id = _effectID++;
-  _effects[id] = {id, sampleID, node};
-
+  var index = EffectStore.getSampleEffects(sampleID).length;
+  _effects[id] = {id, node, sampleID, index, type: effectType};
 }
 
 var EffectStore = assign({}, BaseStore, {
-  getAll: function (sampleID) {
-    return filter(_effects, (effect) => {
-      return effect.sampleID == sampleID;
+  getSampleEffects: function (sampleID) {
+    var sampleEffects = [];
+    forOwn(_effects, (effect, id) => {
+      if (id == sampleID){
+        sampleEffects.push(effect);
+      }
     });
+    return sortBy(sampleEffects, (effect) => {effect.index});
   },
 
   dispatcherIndex: Dispatcher.register((action) => {
@@ -40,7 +45,7 @@ var EffectStore = assign({}, BaseStore, {
         EffectStore.emitChange();
         break;
     }
-  });
+  }),
 });
 
 export default EffectStore;
