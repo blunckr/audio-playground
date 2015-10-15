@@ -11,9 +11,9 @@ var sortBy = require('lodash/collection/sortBy');
 var _effects = {};
 var _effectID = 0;
 
-function create(sampleID, effectType) {
+function create(sampleID, type) {
   var node;
-  switch (effectType) {
+  switch (type) {
     case EffectConstants.TYPES.CONVOVLER_NODE:
       node = audio.createConvolver();
       break;
@@ -23,7 +23,7 @@ function create(sampleID, effectType) {
   }
   var id = _effectID++;
   var index = EffectStore.getSampleEffects(sampleID).length;
-  _effects[id] = {id, node, sampleID, index, type: effectType};
+  _effects[id] = {id, node, sampleID, index, type};
 }
 
 var EffectStore = assign({}, BaseStore, {

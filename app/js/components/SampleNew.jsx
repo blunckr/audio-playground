@@ -1,6 +1,5 @@
 var React = require('react');
 var BaseComponent = require('./BaseComponent.jsx');
-var SampleStore = require('../stores/SampleStore');
 var SampleActions = require('../actions/SampleActions');
 var SampleConstants = require('../constants/SampleConstants');
 
