@@ -37,7 +37,7 @@ export default class Sample extends BaseComponent {
   render() {
     var sample = this.props.sample;
     var effects = map(this.state.effects, (effect) => {
-      return <Effect effect={effect}/>;
+      return <Effect key={effect.id} effect={effect}/>;
     });
 
     return (

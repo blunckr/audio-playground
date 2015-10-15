@@ -21,7 +21,6 @@ function create(sampleID, effectType) {
       node = audio.createGain();
       break;
   }
-  debugger
   var id = _effectID++;
   var index = EffectStore.getSampleEffects(sampleID).length;
   _effects[id] = {id, node, sampleID, index, type: effectType};
@@ -31,7 +30,7 @@ var EffectStore = assign({}, BaseStore, {
   getSampleEffects: function (sampleID) {
     var sampleEffects = [];
     forOwn(_effects, (effect, id) => {
-      if (id == sampleID){
+      if (effect.sampleID == sampleID){
         sampleEffects.push(effect);
       }
     });
@@ -41,7 +40,7 @@ var EffectStore = assign({}, BaseStore, {
   dispatcherIndex: Dispatcher.register((action) => {
     switch (action.actionType) {
       case EffectConstants.CREATE:
-        create(action.sampleID, action.effectType);
+        create(action.sampleID, action.type);
         EffectStore.emitChange();
         break;
     }

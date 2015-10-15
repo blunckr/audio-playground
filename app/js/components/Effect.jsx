@@ -12,7 +12,7 @@ export default class Effect extends BaseComponent {
   render() {
     return(
       <div>
-        <p>{this.effect.type}</p>
+        <p>{this.props.effect.type}</p>
       </div>
     );
   }
