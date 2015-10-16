@@ -21,7 +21,8 @@ function newSampleTemplate() {
   return {
     id: sampleID,
     name: "Sample " + sampleID,
-    loop: false
+    loop: false,
+    audioNode: null
   };
 }
 
@@ -70,6 +71,10 @@ function create() {
   _newSampleState = SampleConstants.IS_RECORDING;
 }
 
+function addAudioNode (id, audioNode) {
+  _samples[id].audioNode = audioNode;
+}
+
 function stopRecording() {
   recorder.stop();
   recorder.getBuffer(saveNewSampleBuffer);
@@ -109,6 +114,11 @@ var SampleStore = assign({}, BaseStore, {
     switch(action.actionType) {
       case SampleConstants.CREATE:
         create();
+        SampleStore.emitChange();
+        break;
+
+      case SampleConstants.ADD_AUDIO_NODE:
+        addAudioNode(action.id, action.audioNode);
         SampleStore.emitChange();
         break;
 

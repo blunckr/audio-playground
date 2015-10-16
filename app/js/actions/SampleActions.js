@@ -8,6 +8,13 @@ module.exports = {
     });
   },
 
+  addAudioNode: function(id, audioNode) {
+    Dispatcher.dispatch({
+      actionType: SampleConstants.ADD_AUDIO_NODE,
+      id, audioNode
+    });
+  },
+
   stopRecording: function () {
     Dispatcher.dispatch({
       actionType: SampleConstants.STOP_RECORDING

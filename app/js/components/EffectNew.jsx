@@ -5,15 +5,15 @@ var EffectConstants = require('../constants/EffectConstants');
 
 var forOwn = require('lodash/object/forOwn');
 
-function defaultState(){
-  return {nodeType: EffectConstants.TYPES.CONVOVLER_NODE};
-}
-
 export default class EffectNew extends BaseComponent {
   constructor() {
     super();
-    this.state = defaultState();
+    this.state = this.defaultState();
     this.bindFunctions(['handleNodeTypeChange', 'handleCreate']);
+  }
+
+  defaultState(){
+    return {nodeType: EffectConstants.TYPES.CONVOVLER_NODE};
   }
 
   handleNodeTypeChange(e) {
@@ -22,7 +22,7 @@ export default class EffectNew extends BaseComponent {
 
   handleCreate(e) {
     EffectActions.create(this.props.sample.id, this.state.nodeType);
-    this.setState(defaultState());
+    this.setState(this.defaultState());
   }
 
   render() {

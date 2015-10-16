@@ -15,6 +15,12 @@ export default class Sample extends BaseComponent {
     this.bindFunctions(['handlePlay', 'handleDelete', 'handleLoopingChange', 'handleStoreChange']);
   }
 
+  componentDidMount() {
+    super.componentDidMount();
+    var audioNode = React.findDOMNode(this.refs.audio);
+    SampleActions.addAudioNode(this.props.sample.id, audioNode);
+  }
+
   handlePlay(e) {
     SampleActions.play(this.props.sample.id);
   }
@@ -42,7 +48,7 @@ export default class Sample extends BaseComponent {
 
     return (
       <div>
-        <audio src={sample.blobURL} controls='true' loop={sample.loop}/>
+        <audio src={sample.blobURL} controls='true' loop={sample.loop} ref="audio"/>
         <label><input type="checkbox" name="looping" value={sample.loop} onChange={this.handleLoopingChange}/>Looping?</label>
         <button onClick={this.handleDelete}>Delete</button>
         {effects}
