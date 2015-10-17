@@ -7,6 +7,8 @@ var SampleActions = require('../actions/SampleActions');
 var audio = require('../lib/AudioContext');
 
 var assign = require('lodash/object/assign');
+var each = require('lodash/collection/each');
+var map = require('lodash/collection/map');
 
 var _samples = {}; // collection of sample items
 
@@ -72,7 +74,8 @@ function create() {
 }
 
 function addAudioNode (id, audioNode) {
-  _samples[id].audioNode = audioNode;
+  _samples[id].audioNode = audio.createMediaElementSource(audioNode);
+  SampleStore.rewireEffects(id, []);
 }
 
 function stopRecording() {
@@ -108,6 +111,20 @@ var SampleStore = assign({}, BaseStore, {
 
   getNewSampleState: function() {
     return _newSampleState;
+  },
+
+  rewireEffects: function(id, effects) {
+    var sample = _samples[id];
+
+    var nodes = map(effects, (effect) => {return effect.node});
+    var prevEffect = sample.audioNode;
+    each(nodes, (nextEffect) => {
+      prevEffect.disconnect();
+      prevEffect.connect(nextEffect);
+      prevEffect = nextEffect;
+    });
+    prevEffect.disconnect();
+    prevEffect.connect(audio.destination);
   },
 
   dispatcherIndex: Dispatcher.register((action) => {

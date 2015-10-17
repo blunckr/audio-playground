@@ -1,4 +1,5 @@
 var BaseStore = require('./BaseStore');
+var SampleStore = require('./SampleStore');
 var Dispatcher = require('../Dispatcher');
 var EffectConstants = require('../constants/EffectConstants');
 var EffectActions = require('../actions/EffectActions');
@@ -19,11 +20,13 @@ function create(sampleID, type) {
       break;
     case EffectConstants.TYPES.GAIN_NODE:
       node = audio.createGain();
+      node.gain.value = 2;
       break;
   }
   var id = _effectID++;
   var index = EffectStore.getSampleEffects(sampleID).length;
   _effects[id] = {id, node, sampleID, index, type};
+  SampleStore.rewireEffects(sampleID, EffectStore.getSampleEffects(sampleID));
 }
 
 var EffectStore = assign({}, BaseStore, {
