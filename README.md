@@ -10,3 +10,9 @@ If you're interested in running it:
   4. `npm run server` for dev server.
 
 MDN has about the only guides available.
+
+## future additions
+* change setting on different effects
+* update and delete effects
+* different sources, including live and upload
+* full control over inputs and outputs
