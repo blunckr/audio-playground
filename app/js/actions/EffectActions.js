@@ -8,5 +8,14 @@ module.exports = {
       sampleID,
       type
     });
+  },
+
+  updateParam: function(effectID, paramID, newValue) {
+    Dispatcher.dispatch({
+      actionType: EffectConstants.UPDATE_PARAM,
+      effectID,
+      paramID,
+      newValue
+    });
   }
 };
