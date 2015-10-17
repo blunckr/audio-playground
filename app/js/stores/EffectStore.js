@@ -21,13 +21,15 @@ function create(sampleID, type) {
   var node;
   var params = {};
   switch (type) {
-    case EffectConstants.TYPES.CONVOVLER_NODE:
-      node = audio.createConvolver();
+    case EffectConstants.TYPES.STEREO_PANNER:
+      node = audio.createStereoPanner();
+      node.pan.value = 0.0;
+      params[EffectConstants.PARAMS.STEREO_PANNER_VALUE] = newParam('Direction', 0.0)
       break;
     case EffectConstants.TYPES.GAIN_NODE:
       node = audio.createGain();
       node.gain.value = 1.0;
-      params[EffectConstants.PARAMS.GAIN_NODE_VALUE] = newParam('Gain Value', 0.0);
+      params[EffectConstants.PARAMS.GAIN_NODE_VALUE] = newParam('Gain Value', 1.0);
       break;
   }
   var id = _effectID++;
@@ -41,6 +43,9 @@ function updateParam (effectID, paramID, newValue) {
   switch(paramID) {
     case EffectConstants.PARAMS.GAIN_NODE_VALUE:
       effect.node.gain.value = newValue;
+      break;
+    case EffectConstants.PARAMS.STEREO_PANNER_VALUE:
+      effect.node.pan.value = newValue;
       break;
   }
 

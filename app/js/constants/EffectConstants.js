@@ -2,10 +2,11 @@ module.exports = {
   CREATE: 'EFFECT_CREATE',
   UPDATE_PARAM: 'EFFECT_UPDATE_PARAM',
   TYPES: {
-    CONVOVLER_NODE: 'ConvolverNode',
-    GAIN_NODE: 'GainNode'
+    GAIN_NODE: 'GainNode',
+    STEREO_PANNER: 'StereoPanner'
   },
   PARAMS: {
-    GAIN_NODE_VALUE: 'GAIN_NODE_VALUE'
+    GAIN_NODE_VALUE: 'GAIN_NODE_VALUE',
+    STEREO_PANNER_VALUE: 'STEREO_PANNER_VALUE'
   }
 };

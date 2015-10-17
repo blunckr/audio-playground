@@ -13,7 +13,7 @@ export default class EffectNew extends BaseComponent {
   }
 
   defaultState(){
-    return {nodeType: EffectConstants.TYPES.CONVOVLER_NODE};
+    return {nodeType: EffectConstants.TYPES.GAIN_NODE};
   }
 
   handleNodeTypeChange(e) {
@@ -21,6 +21,7 @@ export default class EffectNew extends BaseComponent {
   }
 
   handleCreate(e) {
+    debugger
     EffectActions.create(this.props.sample.id, this.state.nodeType);
     this.setState(this.defaultState());
   }
