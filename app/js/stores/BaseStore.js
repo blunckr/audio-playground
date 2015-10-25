@@ -1,6 +1,6 @@
-var {EventEmitter} = require('events');
+import {EventEmitter} from 'events';
 
-var assign = require('lodash/object/assign');
+import assign from 'lodash/object/assign';
 
 var CHANGE_EVENT = 'change';
 

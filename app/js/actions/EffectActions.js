@@ -1,8 +1,8 @@
-var Dispatcher = require('../Dispatcher');
-var EffectConstants = require('../constants/EffectConstants');
+import Dispatcher from '../Dispatcher';
+import EffectConstants from '../constants/EffectConstants';
 
 module.exports = {
-  create: function(sampleID, type) {
+  create(sampleID, type) {
     Dispatcher.dispatch({
       actionType: EffectConstants.CREATE,
       sampleID,
@@ -10,7 +10,7 @@ module.exports = {
     });
   },
 
-  updateParam: function(effectID, paramID, newValue) {
+  updateParam(effectID, paramID, newValue) {
     Dispatcher.dispatch({
       actionType: EffectConstants.UPDATE_PARAM,
       effectID,

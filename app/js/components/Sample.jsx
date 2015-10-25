@@ -1,11 +1,11 @@
-var React = require('react');
-var BaseComponent = require('./BaseComponent.jsx');
-var SampleActions = require('../actions/SampleActions');
-var EffectStore = require('../stores/EffectStore');
-var Effect = require('./Effect.jsx');
-var EffectNew = require('./EffectNew.jsx');
+import React from 'react';
+import BaseComponent from './BaseComponent.jsx';
+import SampleActions from '../actions/SampleActions';
+import EffectStore from '../stores/EffectStore';
+import Effect from './Effect.jsx';
+import EffectNew from './EffectNew.jsx';
 
-var map = require('lodash/collection/map');
+import map from 'lodash/collection/map';
 
 export default class Sample extends BaseComponent {
   constructor(props) {

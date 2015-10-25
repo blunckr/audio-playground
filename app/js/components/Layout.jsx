@@ -1,11 +1,11 @@
-var React = require('react');
+import React from 'react';
 
-var BaseComponent = require('./BaseComponent.jsx');
-var SampleNew = require('./SampleNew.jsx');
-var Sample = require('./Sample.jsx');
-var SampleStore = require('../stores/SampleStore');
+import BaseComponent from './BaseComponent.jsx';
+import SampleNew from './SampleNew.jsx';
+import Sample from './Sample.jsx';
+import SampleStore from '../stores/SampleStore';
 
-var forOwn = require('lodash/object/forOwn');
+import forOwn from 'lodash/object/forOwn';
 
 export default class Layout extends BaseComponent {
   constructor() {

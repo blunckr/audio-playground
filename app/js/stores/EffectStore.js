@@ -1,13 +1,13 @@
-var BaseStore = require('./BaseStore');
-var SampleStore = require('./SampleStore');
-var Dispatcher = require('../Dispatcher');
-var EffectConstants = require('../constants/EffectConstants');
-var EffectActions = require('../actions/EffectActions');
-var audio = require('../lib/AudioContext');
+import BaseStore from './BaseStore';
+import SampleStore from './SampleStore';
+import Dispatcher from '../Dispatcher';
+import EffectConstants from '../constants/EffectConstants';
+import EffectActions from '../actions/EffectActions';
+import {AudioContext} from '../lib/AudioApiProxy';
 
-var assign = require('lodash/object/assign');
-var forOwn = require('lodash/object/forOwn');
-var sortBy = require('lodash/collection/sortBy');
+import assign from 'lodash/object/assign';
+import forOwn from 'lodash/object/forOwn';
+import sortBy from 'lodash/collection/sortBy';
 
 var _effects = {};
 var _effectID = 0;
@@ -22,12 +22,12 @@ function create(sampleID, type) {
   var params = {};
   switch (type) {
     case EffectConstants.TYPES.STEREO_PANNER:
-      node = audio.createStereoPanner();
+      node = AudioContext.createStereoPanner();
       node.pan.value = 0.0;
       params[EffectConstants.PARAMS.STEREO_PANNER_VALUE] = newParam('Direction', 0.0)
       break;
     case EffectConstants.TYPES.GAIN_NODE:
-      node = audio.createGain();
+      node = AudioContext.createGain();
       node.gain.value = 1.0;
       params[EffectConstants.PARAMS.GAIN_NODE_VALUE] = newParam('Gain Value', 1.0);
       break;
@@ -53,7 +53,7 @@ function updateParam (effectID, paramID, newValue) {
 }
 
 var EffectStore = assign({}, BaseStore, {
-  getSampleEffects: function (sampleID) {
+  getSampleEffects(sampleID) {
     var sampleEffects = [];
     forOwn(_effects, (effect, id) => {
       if (effect.sampleID == sampleID){
@@ -74,7 +74,7 @@ var EffectStore = assign({}, BaseStore, {
         EffectStore.emitChange();
         break;
     }
-  }),
+  })
 });
 
 export default EffectStore;

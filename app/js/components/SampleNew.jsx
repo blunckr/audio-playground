@@ -1,7 +1,7 @@
-var React = require('react');
-var BaseComponent = require('./BaseComponent.jsx');
-var SampleActions = require('../actions/SampleActions');
-var SampleConstants = require('../constants/SampleConstants');
+import React from 'react';
+import BaseComponent from './BaseComponent.jsx';
+import SampleActions from '../actions/SampleActions';
+import SampleConstants from '../constants/SampleConstants';
 
 export default class SampleNew extends BaseComponent {
   constructor() {

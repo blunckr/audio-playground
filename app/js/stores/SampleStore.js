@@ -1,14 +1,16 @@
 require("../../recorderjs/recorder.js"); // not a module, puts Recorder on the window
 
-var BaseStore = require('./BaseStore');
-var Dispatcher = require('../Dispatcher');
-var SampleConstants = require('../constants/SampleConstants');
-var SampleActions = require('../actions/SampleActions');
-var audio = require('../lib/AudioContext');
+import BaseStore from './BaseStore';
+import EffectStore from './EffectStore';
+import Dispatcher from '../Dispatcher';
+import SampleConstants from '../constants/SampleConstants';
+import SampleActions from '../actions/SampleActions';
+import AudioApiProxy from '../lib/AudioApiProxy';
 
-var assign = require('lodash/object/assign');
-var each = require('lodash/collection/each');
-var map = require('lodash/collection/map');
+var AudioContext = AudioApiProxy.AudioContext;
+
+import assign from 'lodash/object/assign';
+import map from 'lodash/collection/map';
 
 var _samples = {}; // collection of sample items
 
@@ -18,36 +20,28 @@ var _newSampleState = null;
 var recorder = null;
 var sampleID = 0;
 
+AudioApiProxy.getUserMedia({audio: true},
+  (stream) => {
+    var source = AudioContext.createMediaStreamSource(stream);
+    recorder = new Recorder(source, {workerPath: '/recorderjs/recorderWorker.js'});
+  }, (err) => {
+    alert('You need to give permission to use your microphone and refresh the page');
+  }
+);
+
 function newSampleTemplate() {
   sampleID++;
   return {
     id: sampleID,
-    name: "Sample " + sampleID,
+    name: `Sample  ${sampleID}`,
     loop: false,
     audioNode: null
   };
 }
 
-function getUserMedia(options, success, error){
-  if(navigator.mediaDevices !== undefined) {
-    navigator.mediaDevices.getUserMedia(options).then(success).catch(error);
-  } else {
-    navigator.webkitGetUserMedia(options, success, error);
-  }
-}
-
-getUserMedia({audio: true},
-  (stream) => {
-    var source = audio.createMediaStreamSource(stream);
-    recorder = new Recorder(source, {workerPath: '/recorderjs/recorderWorker.js'});
-  }, (err) => {
-    alert("You need to give permission to use your microphone and refresh the page");
-    location.reload();
-  }
-);
-
+// these three functions run sequentially when a new sample is saved
 function saveNewSampleBuffer(buffers) {
-  var newBuffer = audio.createBuffer(2, buffers[0].length, audio.sampleRate);
+  var newBuffer = AudioContext.createBuffer(2, buffers[0].length, AudioContext.sampleRate);
   newBuffer.getChannelData(0).set(buffers[0]);
   newBuffer.getChannelData(1).set(buffers[1]);
 
@@ -73,11 +67,6 @@ function create() {
   _newSampleState = SampleConstants.IS_RECORDING;
 }
 
-function addAudioNode (id, audioNode) {
-  _samples[id].audioNode = audio.createMediaElementSource(audioNode);
-  SampleStore.rewireEffects(id, []);
-}
-
 function stopRecording() {
   recorder.stop();
   recorder.getBuffer(saveNewSampleBuffer);
@@ -86,18 +75,14 @@ function stopRecording() {
   _newSampleState = SampleConstants.IS_SAVING;
 }
 
+function addAudioNode(id, audioNode) {
+  _samples[id].audioNode = AudioContext.createMediaElementSource(audioNode);
+  SampleStore.rewireEffects(id, []);
+}
+
 function toggleLooping(id) {
   _samples[id].loop = !_samples[id].loop;
 }
-
-// I feel like I will want this later
-// function play(id) {
-//   var sample = _samples[id];
-//   var source = audio.createBufferSource();
-//   source.buffer = sample.buffer;
-//   source.connect(audio.destination);
-//   source.start(0);
-// }
 
 function destroy(id) {
   delete _samples[id];
@@ -105,26 +90,27 @@ function destroy(id) {
 
 var SampleStore = assign({}, BaseStore, {
 
-  getAll: function() {
+  getAll() {
     return _samples;
   },
 
-  getNewSampleState: function() {
+  getNewSampleState() {
     return _newSampleState;
   },
 
-  rewireEffects: function(id, effects) {
+  rewireEffects(id) {
+    var effects = EffectStore.getSampleEffects(id);
     var sample = _samples[id];
 
     var nodes = map(effects, (effect) => {return effect.node});
     var prevEffect = sample.audioNode;
-    each(nodes, (nextEffect) => {
+    nodes.forEach((nextEffect) => {
       prevEffect.disconnect();
       prevEffect.connect(nextEffect);
       prevEffect = nextEffect;
     });
     prevEffect.disconnect();
-    prevEffect.connect(audio.destination);
+    prevEffect.connect(AudioContext.destination);
   },
 
   dispatcherIndex: Dispatcher.register((action) => {

@@ -1,10 +1,10 @@
-var React = require('react');
-var BaseComponent = require('./BaseComponent.jsx');
-var EffectParam = require('./EffectParam.jsx');
-var EffectActions = require('../actions/EffectActions');
-var EffectConstants = require('../constants/EffectConstants');
+import React from 'react';
+import BaseComponent from './BaseComponent.jsx';
+import EffectParam from './EffectParam.jsx';
+import EffectActions from '../actions/EffectActions';
+import EffectConstants from '../constants/EffectConstants';
 
-var forOwn = require('lodash/object/forOwn');
+import forOwn from 'lodash/object/forOwn';
 
 export default class Effect extends BaseComponent {
   constructor() {
@@ -20,10 +20,8 @@ export default class Effect extends BaseComponent {
 
     return(
       <div>
-        <p>
-          {this.props.effect.type}
-          {paramNodes}
-        </p>
+        {this.props.effect.type}
+        {paramNodes}
       </div>
     );
   }

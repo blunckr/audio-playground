@@ -1,6 +1,4 @@
-var React = require('react');
-
-var each = require('lodash/collection/each');
+import React from 'react';
 
 export default class BaseComponent extends React.Component {
   bindFunctions (functions){
@@ -10,15 +8,19 @@ export default class BaseComponent extends React.Component {
   }
 
   componentDidMount() {
-    each(this.stores, (store) => {
-      store.addChangeListener(this.handleStoreChange);
-    });
+    if(this.stores){
+      this.stores.forEach((store) => {
+        store.addChangeListener(this.handleStoreChange);
+      });
+    }
   }
 
   componentWillUnmount() {
-    each(this.stores, (store) => {
-      store.removeChangeListener(this.handleStoreChange);
-    });
+    if(this.stores){
+      this.stores.forEach((store) => {
+        store.removeChangeListener(this.handleStoreChange);
+      });
+    }
   }
 
   handleStoreChange() {

@@ -1,7 +1,7 @@
-var React = require('react');
-var BaseComponent = require('./BaseComponent.jsx');
-var EffectActions = require('../actions/EffectActions');
-var EffectConstants = require('../constants/EffectConstants');
+import React from 'react';
+import BaseComponent from './BaseComponent.jsx';
+import EffectActions from '../actions/EffectActions';
+import EffectConstants from '../constants/EffectConstants';
 
 export default class EffectParam extends BaseComponent {
   constructor() {

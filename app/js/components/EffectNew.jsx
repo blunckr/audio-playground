@@ -1,9 +1,9 @@
-var React = require('react');
-var BaseComponent = require('./BaseComponent.jsx');
-var EffectActions = require('../actions/EffectActions');
-var EffectConstants = require('../constants/EffectConstants');
+import React from 'react';
+import BaseComponent from './BaseComponent.jsx';
+import EffectActions from '../actions/EffectActions';
+import EffectConstants from '../constants/EffectConstants';
 
-var forOwn = require('lodash/object/forOwn');
+import forOwn from 'lodash/object/forOwn';
 
 export default class EffectNew extends BaseComponent {
   constructor() {
@@ -13,17 +13,18 @@ export default class EffectNew extends BaseComponent {
   }
 
   defaultState(){
-    return {nodeType: EffectConstants.TYPES.GAIN_NODE};
+    return {nodeType: ''};
   }
 
   handleNodeTypeChange(e) {
     this.setState({nodeType: e.target.value});
   }
 
-  handleCreate(e) {
-    debugger
-    EffectActions.create(this.props.sample.id, this.state.nodeType);
-    this.setState(this.defaultState());
+  handleCreate() {
+    if(this.state.nodeType != ''){
+      EffectActions.create(this.props.sample.id, this.state.nodeType);
+      this.setState(this.defaultState());
+    }
   }
 
   render() {
@@ -34,7 +35,10 @@ export default class EffectNew extends BaseComponent {
 
     return(
       <div>
-        <select onChange={this.handleNodeTypeChange} value={this.state.nodeType}>{nodeTypeOptions}</select>
+        <select onChange={this.handleNodeTypeChange} value={this.state.nodeType}>
+          <option value=''>-</option>
+          {nodeTypeOptions}
+        </select>
         <button onClick={this.handleCreate}>Create New Effect</button>
       </div>
     );
