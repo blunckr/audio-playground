@@ -4,7 +4,7 @@ import SampleConstants from '../constants/SampleConstants';
 module.exports = {
   create() {
     Dispatcher.dispatch({
-      actionType: SampleConstants.CREATE,
+      actionType: SampleConstants.CREATE
     });
   },
 

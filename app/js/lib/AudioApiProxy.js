@@ -1,3 +1,4 @@
+/*globals webkitGetAudioContext*/
 module.exports = {
   AudioContext: new (AudioContext || webkitGetAudioContext)(),
 
@@ -8,4 +9,4 @@ module.exports = {
       navigator.webkitGetUserMedia(options, success, error);
     }
   }
-}
+};

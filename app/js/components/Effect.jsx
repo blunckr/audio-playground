@@ -1,8 +1,6 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import EffectParam from './EffectParam.jsx';
-import EffectActions from '../actions/EffectActions';
-import EffectConstants from '../constants/EffectConstants';
 
 import forOwn from 'lodash/object/forOwn';
 

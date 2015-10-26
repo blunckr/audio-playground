@@ -21,15 +21,15 @@ export default class Sample extends BaseComponent {
     SampleActions.addAudioNode(this.props.sample.id, audioNode);
   }
 
-  handlePlay(e) {
+  handlePlay() {
     SampleActions.play(this.props.sample.id);
   }
 
-  handleDelete(e) {
+  handleDelete() {
     SampleActions.destroy(this.props.sample.id);
   }
 
-  handleLoopingChange(e) {
+  handleLoopingChange() {
     var sample = this.props.sample;
     SampleActions.toggleLooping(sample.id);
   }

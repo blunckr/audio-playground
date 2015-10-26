@@ -1,7 +1,6 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import EffectActions from '../actions/EffectActions';
-import EffectConstants from '../constants/EffectConstants';
 
 export default class EffectParam extends BaseComponent {
   constructor() {

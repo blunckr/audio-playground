@@ -1,10 +1,10 @@
-require("../../recorderjs/recorder.js"); // not a module, puts Recorder on the window
+/*globals Recorder*/
+require('../../recorderjs/recorder.js'); // not a module, puts Recorder on the window
 
 import BaseStore from './BaseStore';
 import EffectStore from './EffectStore';
 import Dispatcher from '../Dispatcher';
 import SampleConstants from '../constants/SampleConstants';
-import SampleActions from '../actions/SampleActions';
 import AudioApiProxy from '../lib/AudioApiProxy';
 
 var AudioContext = AudioApiProxy.AudioContext;
@@ -24,7 +24,7 @@ AudioApiProxy.getUserMedia({audio: true},
   (stream) => {
     var source = AudioContext.createMediaStreamSource(stream);
     recorder = new Recorder(source, {workerPath: '/recorderjs/recorderWorker.js'});
-  }, (err) => {
+  }, () => {
     alert('You need to give permission to use your microphone and refresh the page');
   }
 );
@@ -102,7 +102,7 @@ var SampleStore = assign({}, BaseStore, {
     var effects = EffectStore.getSampleEffects(id);
     var sample = _samples[id];
 
-    var nodes = map(effects, (effect) => {return effect.node});
+    var nodes = map(effects, (effect) => { return effect.node;});
     var prevEffect = sample.audioNode;
     nodes.forEach((nextEffect) => {
       prevEffect.disconnect();
@@ -115,31 +115,31 @@ var SampleStore = assign({}, BaseStore, {
 
   dispatcherIndex: Dispatcher.register((action) => {
     switch(action.actionType) {
-      case SampleConstants.CREATE:
-        create();
-        SampleStore.emitChange();
-        break;
+    case SampleConstants.CREATE:
+      create();
+      SampleStore.emitChange();
+      break;
 
-      case SampleConstants.ADD_AUDIO_NODE:
-        addAudioNode(action.id, action.audioNode);
-        SampleStore.emitChange();
-        break;
+    case SampleConstants.ADD_AUDIO_NODE:
+      addAudioNode(action.id, action.audioNode);
+      SampleStore.emitChange();
+      break;
 
-      case SampleConstants.STOP_RECORDING:
-        stopRecording();
-        SampleStore.emitChange();
-        break;
+    case SampleConstants.STOP_RECORDING:
+      stopRecording();
+      SampleStore.emitChange();
+      break;
 
-      case SampleConstants.TOGGLE_LOOPING:
-        toggleLooping(action.id);
-        SampleStore.emitChange();
-        break;
+    case SampleConstants.TOGGLE_LOOPING:
+      toggleLooping(action.id);
+      SampleStore.emitChange();
+      break;
 
-      case SampleConstants.DESTROY:
-        destroy(action.id);
-        SampleStore.emitChange();
-        break;
-      }
+    case SampleConstants.DESTROY:
+      destroy(action.id);
+      SampleStore.emitChange();
+      break;
+    }
     return true; // No errors. Needed by promise in Dispatcher.
   })
 });

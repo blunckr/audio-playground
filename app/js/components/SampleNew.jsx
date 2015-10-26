@@ -22,11 +22,11 @@ export default class SampleNew extends BaseComponent {
   render() {
     switch (this.props.newSampleState) {
     case null:
-      return <button onClick={this.handleRecord}>Record New Sample</button>
+      return <button onClick={this.handleRecord}>Record New Sample</button>;
     case SampleConstants.IS_RECORDING:
-      return <button onClick={this.handleStop}>Stop Recording</button>
+      return <button onClick={this.handleStop}>Stop Recording</button>;
     case SampleConstants.IS_SAVING:
-      return <p>Saving...</p>
+      return <p>Saving...</p>;
     }
   }
 }
