@@ -1,6 +1,9 @@
+next:
+  styles
+  restructure effect store. probably add a lib file that builds each effect
+
 optimizations:
   Fork recorderjs to be friendly with webpack
     also allow exporting buffer and WAV at the same time. it can't handle two callbacks right now
     use worker loader
-  linter
   upgrade to latest react
