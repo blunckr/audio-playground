@@ -48,10 +48,22 @@ export default class Sample extends BaseComponent {
 
     return (
       <div>
-        <audio src={sample.blobURL} controls='true' loop={sample.loop} ref="audio"/>
-        <label><input type="checkbox" name="looping" value={sample.loop} onChange={this.handleLoopingChange}/>Looping?</label>
-        <button onClick={this.handleDelete}>Delete</button>
-        {effects}
+        <div className="h3">{sample.name}</div>
+        <div className="form-inline">
+          <audio src={sample.blobURL} controls='true' loop={sample.loop} ref="audio"/>
+          <div className="checkbox">
+            <label>
+              <input type="checkbox" name="looping" value={sample.loop} onChange={this.handleLoopingChange}/> Looping?
+            </label>
+          </div>
+          <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
+        </div>
+
+        <h4>Effects</h4>
+        <div className="row">
+          {effects}
+        </div>
+
         <EffectNew sample={sample}/>
         <hr />
       </div>

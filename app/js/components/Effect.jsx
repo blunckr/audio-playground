@@ -17,7 +17,7 @@ export default class Effect extends BaseComponent {
     });
 
     return(
-      <div>
+      <div className="col-sm-3">
         {this.props.effect.type}
         {paramNodes}
       </div>

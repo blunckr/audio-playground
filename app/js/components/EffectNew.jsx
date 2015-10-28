@@ -34,12 +34,12 @@ export default class EffectNew extends BaseComponent {
     });
 
     return(
-      <div>
-        <select onChange={this.handleNodeTypeChange} value={this.state.nodeType}>
+      <div className="form-inline">
+        <select className="form-control" onChange={this.handleNodeTypeChange} value={this.state.nodeType}>
           <option value=''>-</option>
           {nodeTypeOptions}
         </select>
-        <button onClick={this.handleCreate}>Create New Effect</button>
+        <button className="btn btn-primary" onClick={this.handleCreate}>Create New Effect</button>
       </div>
     );
   }

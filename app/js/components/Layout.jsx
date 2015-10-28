@@ -22,7 +22,7 @@ export default class Layout extends BaseComponent {
     });
 
     return (
-      <div>
+      <div className="container-fluid">
         <div id="samples">{samples}</div>
         <SampleNew newSampleState={this.state.newSampleState}/>
       </div>
