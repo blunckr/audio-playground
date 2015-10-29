@@ -1,4 +1,4 @@
-import Dispatcher from '../Dispatcher';
+import Dispatcher from '../lib/Dispatcher';
 import EffectConstants from '../constants/EffectConstants';
 
 module.exports = {

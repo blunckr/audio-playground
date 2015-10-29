@@ -1,6 +1,6 @@
 import BaseStore from './BaseStore';
 import SampleStore from './SampleStore';
-import Dispatcher from '../Dispatcher';
+import Dispatcher from '../lib/Dispatcher';
 import EffectConstants from '../constants/EffectConstants';
 import {AudioContext} from '../lib/AudioApiProxy';
 

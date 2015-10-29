@@ -1,4 +1,4 @@
-import Dispatcher from '../Dispatcher';
+import Dispatcher from '../lib/Dispatcher';
 import SampleConstants from '../constants/SampleConstants';
 
 module.exports = {

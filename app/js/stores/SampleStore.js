@@ -3,7 +3,7 @@ require('../../recorderjs/recorder.js'); // not a module, puts Recorder on the w
 
 import BaseStore from './BaseStore';
 import EffectStore from './EffectStore';
-import Dispatcher from '../Dispatcher';
+import Dispatcher from '../lib/Dispatcher';
 import SampleConstants from '../constants/SampleConstants';
 import AudioApiProxy from '../lib/AudioApiProxy';
 
