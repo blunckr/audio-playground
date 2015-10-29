@@ -48,7 +48,7 @@ export default class Sample extends BaseComponent {
 
     return (
       <div>
-        <div className="h3">{sample.name}</div>
+        <h2>{sample.name}</h2>
         <div className="form-inline">
           <audio src={sample.blobURL} controls='true' loop={sample.loop} ref="audio"/>
           <div className="checkbox">
@@ -59,7 +59,7 @@ export default class Sample extends BaseComponent {
           <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
         </div>
 
-        <h4>Effects</h4>
+        <h3>Effects</h3>
         <div className="row">
           {effects}
         </div>

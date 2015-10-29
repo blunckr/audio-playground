@@ -1,13 +1,18 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import EffectParam from './EffectParam.jsx';
+import EffectActions from '../actions/EffectActions';
 
 import forOwn from 'lodash/object/forOwn';
 
 export default class Effect extends BaseComponent {
   constructor() {
     super();
-    this.bindFunctions([]);
+    this.bindFunctions(['handleDelete']);
+  }
+
+  handleDelete(){
+    EffectActions.destroy(this.props.effect.id);
   }
 
   render() {
@@ -18,8 +23,9 @@ export default class Effect extends BaseComponent {
 
     return(
       <div className="col-sm-3">
-        {this.props.effect.type}
+        <h4>{this.props.effect.type}</h4>
         {paramNodes}
+        <button className="btn btn-danger" onClick={this.handleDelete}>Delete</button>
       </div>
     );
   }

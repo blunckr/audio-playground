@@ -14,10 +14,10 @@ export default class EffectParam extends BaseComponent {
 
   render() {
     return(
-      <span>
-        {this.props.param.name}:
-        <input type="number" value={this.props.param.value} onChange={this.handleValueChange}/>
-      </span>
+      <div className="form-group">
+        <label>{this.props.param.name}</label>
+        <input className="form-control" type="number" value={this.props.param.value} onChange={this.handleValueChange}/>
+      </div>
     );
   }
 }

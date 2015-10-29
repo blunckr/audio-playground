@@ -17,5 +17,11 @@ module.exports = {
       paramID,
       newValue
     });
+  },
+  destroy(effectID) {
+    Dispatcher.dispatch({
+      actionType: EffectConstants.DESTROY,
+      effectID
+    });
   }
 };

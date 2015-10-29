@@ -1,5 +1,6 @@
 module.exports = {
   CREATE: 'EFFECT_CREATE',
+  DESTROY: 'EFFECT_DESTROY',
   UPDATE_PARAM: 'EFFECT_UPDATE_PARAM',
   TYPES: {
     GAIN_NODE: 'GainNode',

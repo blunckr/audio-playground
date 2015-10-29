@@ -34,7 +34,7 @@ function create(sampleID, type) {
   var id = _effectID++;
   var index = EffectStore.getSampleEffects(sampleID).length;
   _effects[id] = {id, node, sampleID, index, type, params};
-  SampleStore.rewireEffects(sampleID, EffectStore.getSampleEffects(sampleID));
+  SampleStore.rewireEffects(sampleID);
 }
 
 function updateParam (effectID, paramID, newValue) {
@@ -49,6 +49,12 @@ function updateParam (effectID, paramID, newValue) {
   }
 
   effect.params[paramID].value = newValue;
+}
+
+function destroy(effectID) {
+  var effect = _effects[effectID];
+  delete _effects[effectID];
+  SampleStore.rewireEffects(effect.sampleID);
 }
 
 var EffectStore = assign({}, BaseStore, {
@@ -70,6 +76,10 @@ var EffectStore = assign({}, BaseStore, {
       break;
     case EffectConstants.UPDATE_PARAM:
       updateParam(action.effectID, action.paramID, action.newValue);
+      EffectStore.emitChange();
+      break;
+    case EffectConstants.DESTROY:
+      destroy(action.effectID);
       EffectStore.emitChange();
       break;
     }
