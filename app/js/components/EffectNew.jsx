@@ -1,9 +1,6 @@
 import React from 'react';
 import BaseComponent from './BaseComponent.jsx';
 import EffectActions from '../actions/EffectActions';
-import EffectConstants from '../constants/EffectConstants';
-
-import forOwn from 'lodash/object/forOwn';
 
 export default class EffectNew extends BaseComponent {
   constructor() {
@@ -13,7 +10,7 @@ export default class EffectNew extends BaseComponent {
   }
 
   defaultState(){
-    return {nodeType: ''};
+    return { nodeType: '' };
   }
 
   handleNodeTypeChange(e) {
@@ -28,9 +25,8 @@ export default class EffectNew extends BaseComponent {
   }
 
   render() {
-    var nodeTypeOptions = [];
-    forOwn(EffectConstants.TYPES, (v, k) => {
-      nodeTypeOptions.push(<option key={k} value={v}>{v}</option>);
+    var nodeTypeOptions = this.props.effectTypes.map((effect)=>{
+      return (<option key={effect} value={effect}>{effect}</option>);
     });
 
     return(

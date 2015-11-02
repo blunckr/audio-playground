@@ -18,7 +18,7 @@ export default class Effect extends BaseComponent {
   render() {
     var paramNodes = [];
     forOwn(this.props.effect.params, (param, k) => {
-      paramNodes.push(<EffectParam key={k} param={param} paramID={k} effectID={this.props.effect.id}/>);
+      paramNodes.push(<EffectParam key={k} param={param} name={k} effectID={this.props.effect.id}/>);
     });
 
     return(

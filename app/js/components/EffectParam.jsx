@@ -9,14 +9,14 @@ export default class EffectParam extends BaseComponent {
   }
 
   handleValueChange(e) {
-    EffectActions.updateParam(this.props.effectID, this.props.paramID, e.target.value);
+    EffectActions.updateParam(this.props.effectID, this.props.name, e.target.value);
   }
 
   render() {
     return(
       <div className="form-group">
-        <label>{this.props.param.name}</label>
-        <input className="form-control" type="number" value={this.props.param.value} onChange={this.handleValueChange}/>
+        <label>{this.props.name}</label>
+        <input className="form-control" type="number" value={this.props.param} onChange={this.handleValueChange}/>
       </div>
     );
   }

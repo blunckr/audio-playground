@@ -36,7 +36,8 @@ export default class Sample extends BaseComponent {
 
   getStoreState() {
     return {
-      effects: EffectStore.getSampleEffects(this.props.sample.id)
+      effects: EffectStore.getSampleEffects(this.props.sample.id),
+      effectTypes: EffectStore.getEffectTypes()
     };
   }
 
@@ -64,7 +65,7 @@ export default class Sample extends BaseComponent {
           {effects}
         </div>
 
-        <EffectNew sample={sample}/>
+        <EffectNew sample={sample} effectTypes={this.state.effectTypes}/>
         <hr />
       </div>
     );

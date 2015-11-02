@@ -2,35 +2,19 @@ import BaseStore from './BaseStore';
 import SampleStore from './SampleStore';
 import Dispatcher from '../lib/Dispatcher';
 import EffectConstants from '../constants/EffectConstants';
-import {AudioContext} from '../lib/AudioApiProxy';
+import Effects from '../lib/Effects';
 
 import assign from 'lodash/object/assign';
 import forOwn from 'lodash/object/forOwn';
+import keys from 'lodash/object/keys';
 import sortBy from 'lodash/collection/sortBy';
 
 var _effects = {};
 var _effectID = 0;
 
-// this is just to help keep the same structure
-function newParam (name, value) {
-  return {name, value};
-}
 
 function create(sampleID, type) {
-  var node;
-  var params = {};
-  switch (type) {
-  case EffectConstants.TYPES.STEREO_PANNER:
-    node = AudioContext.createStereoPanner();
-    node.pan.value = 0.0;
-    params[EffectConstants.PARAMS.STEREO_PANNER_VALUE] = newParam('Direction', 0.0);
-    break;
-  case EffectConstants.TYPES.GAIN_NODE:
-    node = AudioContext.createGain();
-    node.gain.value = 1.0;
-    params[EffectConstants.PARAMS.GAIN_NODE_VALUE] = newParam('Gain Value', 1.0);
-    break;
-  }
+  var [node, params] = Effects[type].create();
   var id = _effectID++;
   var index = EffectStore.getSampleEffects(sampleID).length;
   _effects[id] = {id, node, sampleID, index, type, params};
@@ -39,16 +23,8 @@ function create(sampleID, type) {
 
 function updateParam (effectID, paramID, newValue) {
   var effect = _effects[effectID];
-  switch(paramID) {
-  case EffectConstants.PARAMS.GAIN_NODE_VALUE:
-    effect.node.gain.value = newValue;
-    break;
-  case EffectConstants.PARAMS.STEREO_PANNER_VALUE:
-    effect.node.pan.value = newValue;
-    break;
-  }
-
-  effect.params[paramID].value = newValue;
+  effect.params[paramID] = newValue;
+  Effects[effect.type].applyParams(effect.node, effect.params);
 }
 
 function destroy(effectID) {
@@ -66,6 +42,10 @@ var EffectStore = assign({}, BaseStore, {
       }
     });
     return sortBy(sampleEffects, (effect) => { return effect.index; });
+  },
+
+  getEffectTypes() {
+    return keys(Effects);
   },
 
   dispatcherIndex: Dispatcher.register((action) => {
