@@ -4,6 +4,32 @@ import forOwn from 'lodash/object/forOwn';
 import keys from 'lodash/object/keys';
 
 var effects = {
+  Distortion: {
+    params: {
+      k: {
+        default: 400
+      }
+    },
+    createNode() {
+      return AudioContext.createWaveShaper();
+    },
+    applyParams(node, params) {
+      // stolen from mozilla, who stole it from stack overflow
+      var k = params.k,
+        n_samples = 44100,
+        curve = new Float32Array(n_samples),
+        deg = Math.PI / 180,
+        i = 0,
+        x;
+      for ( ; i < n_samples; ++i ) {
+        x = i * 2 / n_samples - 1;
+        curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+      }
+      node.curve = curve;
+      node.oversample = '4x';
+    }
+  },
+
   Gain: {
     params: {
       gain: {
