@@ -6,7 +6,6 @@ import Effects from '../lib/Effects';
 
 import assign from 'lodash/object/assign';
 import forOwn from 'lodash/object/forOwn';
-import keys from 'lodash/object/keys';
 import sortBy from 'lodash/collection/sortBy';
 
 var _effects = {};
@@ -14,7 +13,7 @@ var _effectID = 0;
 
 
 function create(sampleID, type) {
-  var [node, params] = Effects[type].create();
+  var [node, params] = Effects.create(type);
   var id = _effectID++;
   var index = EffectStore.getSampleEffects(sampleID).length;
   _effects[id] = {id, node, sampleID, index, type, params};
@@ -24,7 +23,7 @@ function create(sampleID, type) {
 function updateParam (effectID, paramID, newValue) {
   var effect = _effects[effectID];
   effect.params[paramID] = newValue;
-  Effects[effect.type].applyParams(effect.node, effect.params);
+  Effects.update(effect.type, effect.node, effect.params);
 }
 
 function destroy(effectID) {
@@ -45,7 +44,7 @@ var EffectStore = assign({}, BaseStore, {
   },
 
   getEffectTypes() {
-    return keys(Effects);
+    return Effects.list();
   },
 
   dispatcherIndex: Dispatcher.register((action) => {
